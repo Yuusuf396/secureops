@@ -32,7 +32,7 @@ Full-stack incident management platform with AI-powered risk analysis. Log secur
 | POST   | `/ai/summarize`  | Run AI analysis for an incident (by id)      |
 
 ## Running locally
-<img width="904" height="490" alt="image" src="https://github.com/user-attachments/assets/5bbbce67-4b86-4bb0-ade4-d6a6fc555f39" />
+<img width="904" height="522" alt="image" src="https://github.com/user-attachments/assets/097de003-9a37-41f2-9e88-13c3017505ec" />
 
 
 ### Backend
