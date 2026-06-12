@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
-const { analyzeIncident } = require('./ai');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -48,23 +47,6 @@ app.post('/incidents', async (req, res, next) => {
       severity,
     });
     res.status(201).json(incident);
-  } catch (err) {
-    next(err);
-  }
-});
-
-// Runs AI analysis for an incident and persists the result on the record.
-app.post('/ai/summarize', async (req, res, next) => {
-  try {
-    const { incidentId } = req.body || {};
-    if (!incidentId) return res.status(400).json({ error: 'incidentId is required' });
-
-    const incident = await db.getIncident(incidentId);
-    if (!incident) return res.status(404).json({ error: 'Incident not found' });
-
-    const analysis = await analyzeIncident(incident);
-    const updated = await db.saveAnalysis(incident.id, analysis);
-    res.json(updated);
   } catch (err) {
     next(err);
   }

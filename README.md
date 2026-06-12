@@ -1,6 +1,6 @@
 # 🛡️ SecureOps Lite
 
-Full-stack incident management platform with AI-powered risk analysis. Log security incidents, view them in a dashboard, and generate AI summaries, risk classifications, and suggested mitigations for each one.
+A lightweight full-stack incident tracking dashboard. Log security incidents, browse them with severity tags, and filter or sort to find what matters.
 
 **Live demo:** _coming soon_
 
@@ -9,25 +9,23 @@ Full-stack incident management platform with AI-powered risk analysis. Log secur
 - **Frontend:** React (Vite), plain CSS
 - **Backend:** Node.js + Express REST API
 - **Database:** PostgreSQL (Supabase)
-- **AI:** Anthropic Claude API
 - **Deployment:** Vercel (frontend) + Render (backend) + Supabase (DB)
 
 ## Features
 
 - **Incident creation** — title, description, severity (Low / Medium / High)
-- **Dashboard** — list all incidents with severity tags, filter by severity, sort by date or severity
-- **Incident detail view** — full details plus persisted AI analysis
-- **AI risk analysis** — one click generates a short summary, a risk classification, and a suggested mitigation action, stored on the incident
+- **Dashboard** — all incidents with severity tags, filter by severity, sort by date or severity
+- **Incident detail view** — full incident details
+- **Zero-setup local mode** — runs on an in-memory store when no database is configured
 
 ## API
 
-| Method | Endpoint         | Description                                  |
-| ------ | ---------------- | -------------------------------------------- |
-| GET    | `/health`        | Health check                                 |
-| GET    | `/incidents`     | List all incidents                           |
-| GET    | `/incidents/:id` | Get a single incident                        |
-| POST   | `/incidents`     | Create an incident                           |
-| POST   | `/ai/summarize`  | Run AI analysis for an incident (by id)      |
+| Method | Endpoint         | Description           |
+| ------ | ---------------- | --------------------- |
+| GET    | `/health`        | Health check          |
+| GET    | `/incidents`     | List all incidents    |
+| GET    | `/incidents/:id` | Get a single incident |
+| POST   | `/incidents`     | Create an incident    |
 
 ## Running locally
 
@@ -35,12 +33,11 @@ Full-stack incident management platform with AI-powered risk analysis. Log secur
 
 ```bash
 cd backend
-cp .env.example .env   # add your DATABASE_URL and ANTHROPIC_API_KEY
 npm install
 npm run dev            # http://localhost:4000
 ```
 
-No `DATABASE_URL`? The backend falls back to an in-memory store so you can try it instantly (data resets on restart).
+Optional: copy `.env.example` to `.env` and set `DATABASE_URL` to use Postgres. Without it, the backend uses an in-memory store (data resets on restart).
 
 ### Frontend
 
@@ -53,9 +50,9 @@ npm run dev            # http://localhost:5173
 ## Deployment
 
 1. **Supabase** — create a project, copy the Postgres connection string. The backend creates the `incidents` table automatically on startup.
-2. **Render** — create a Web Service from this repo (root dir `backend`), or use the included `render.yaml`. Set `DATABASE_URL`, `ANTHROPIC_API_KEY`, and `FRONTEND_ORIGIN` (your Vercel URL).
+2. **Render** — create a Web Service from this repo (root dir `backend`), or use the included `render.yaml`. Set `DATABASE_URL` and `FRONTEND_ORIGIN` (your Vercel URL).
 3. **Vercel** — import the repo, set root dir to `frontend`, and set `VITE_API_URL` to your Render backend URL.
 
 ## Screenshots
 
-_Add screenshots here: dashboard, incident form, AI analysis view._
+_Add screenshots here: dashboard, incident form, detail view._
