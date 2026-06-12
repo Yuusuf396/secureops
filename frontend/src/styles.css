@@ -109,6 +109,12 @@ button:disabled {
   cursor: not-allowed;
 }
 
+button.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
 button.link {
   background: none;
   color: var(--accent);
@@ -187,6 +193,11 @@ button.link {
   color: var(--high);
 }
 
+.tag-ai {
+  background: rgba(79, 142, 247, 0.15);
+  color: var(--accent);
+}
+
 .date {
   margin-left: auto;
   color: var(--muted);
@@ -208,6 +219,28 @@ button.link {
 .detail .description {
   white-space: pre-wrap;
   line-height: 1.6;
+}
+
+.ai-section {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.25rem;
+}
+
+.ai-section h3 {
+  margin-top: 0;
+}
+
+.ai-result .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.ai-result p {
+  margin: 0.25rem 0 1rem;
 }
 
 .form-error {

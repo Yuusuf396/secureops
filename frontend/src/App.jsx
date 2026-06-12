@@ -29,6 +29,10 @@ export default function App() {
     setIncidents((prev) => [incident, ...prev]);
   }
 
+  function handleUpdated(incident) {
+    setIncidents((prev) => prev.map((i) => (i.id === incident.id ? incident : i)));
+  }
+
   const selected = incidents.find((i) => i.id === selectedId);
 
   return (
@@ -37,13 +41,17 @@ export default function App() {
         <h1>
           <span className="logo">🛡️</span> SecureOps Lite
         </h1>
-        <p className="tagline">Lightweight security incident tracking</p>
+        <p className="tagline">Incident management with AI-powered risk analysis</p>
       </header>
 
       {error && <div className="banner error">{error}</div>}
 
       {selected ? (
-        <IncidentDetail incident={selected} onBack={() => setSelectedId(null)} />
+        <IncidentDetail
+          incident={selected}
+          onBack={() => setSelectedId(null)}
+          onUpdated={handleUpdated}
+        />
       ) : (
         <main className="grid">
           <section className="panel">

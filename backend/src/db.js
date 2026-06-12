@@ -8,6 +8,9 @@ const SCHEMA = `
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     severity TEXT NOT NULL CHECK (severity IN ('Low', 'Medium', 'High')),
+    ai_summary TEXT,
+    ai_risk TEXT,
+    ai_action TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
   );
 `;
@@ -41,6 +44,13 @@ if (process.env.DATABASE_URL) {
       );
       return rows[0];
     },
+    async saveAnalysis(id, { summary, risk, action }) {
+      const { rows } = await pool.query(
+        'UPDATE incidents SET ai_summary = $1, ai_risk = $2, ai_action = $3 WHERE id = $4 RETURNING *',
+        [summary, risk, action, id]
+      );
+      return rows[0] || null;
+    },
   };
 } else {
   const incidents = [];
@@ -63,9 +73,20 @@ if (process.env.DATABASE_URL) {
         title,
         description,
         severity,
+        ai_summary: null,
+        ai_risk: null,
+        ai_action: null,
         created_at: new Date().toISOString(),
       };
       incidents.push(incident);
+      return incident;
+    },
+    async saveAnalysis(id, { summary, risk, action }) {
+      const incident = incidents.find((i) => i.id === Number(id));
+      if (!incident) return null;
+      incident.ai_summary = summary;
+      incident.ai_risk = risk;
+      incident.ai_action = action;
       return incident;
     },
   };

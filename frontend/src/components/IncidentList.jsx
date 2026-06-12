@@ -39,6 +39,7 @@ export default function IncidentList({ incidents, onSelect }) {
                   <span className={`tag tag-${incident.severity.toLowerCase()}`}>
                     {incident.severity}
                   </span>
+                  {incident.ai_summary && <span className="tag tag-ai">AI analyzed</span>}
                   <span className="date">
                     {new Date(incident.created_at).toLocaleDateString()}
                   </span>
