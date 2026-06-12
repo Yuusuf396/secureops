@@ -9,7 +9,7 @@ Full-stack incident management platform with AI-powered risk analysis. Log secur
 - **Frontend:** React (Vite), plain CSS
 - **Backend:** Node.js + Express REST API
 - **Database:** PostgreSQL (Supabase)
-- **AI:** Anthropic Claude API
+- **AI:** Groq API (Llama 3.3 70B, free tier)
 - **Deployment:** Vercel (frontend) + Render (backend) + Supabase (DB)
 
 ## Features
@@ -35,7 +35,7 @@ Full-stack incident management platform with AI-powered risk analysis. Log secur
 
 ```bash
 cd backend
-cp .env.example .env   # add your DATABASE_URL and ANTHROPIC_API_KEY
+cp .env.example .env   # add your DATABASE_URL and GROQ_API_KEY
 npm install
 npm run dev            # http://localhost:4000
 ```
@@ -53,7 +53,7 @@ npm run dev            # http://localhost:5173
 ## Deployment
 
 1. **Supabase** — create a project, copy the Postgres connection string. The backend creates the `incidents` table automatically on startup.
-2. **Render** — create a Web Service from this repo (root dir `backend`), or use the included `render.yaml`. Set `DATABASE_URL`, `ANTHROPIC_API_KEY`, and `FRONTEND_ORIGIN` (your Vercel URL).
+2. **Render** — create a Web Service from this repo (root dir `backend`), or use the included `render.yaml`. Set `DATABASE_URL`, `GROQ_API_KEY`, and `FRONTEND_ORIGIN` (your Vercel URL).
 3. **Vercel** — import the repo, set root dir to `frontend`, and set `VITE_API_URL` to your Render backend URL.
 
 ## Screenshots

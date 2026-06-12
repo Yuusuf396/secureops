@@ -1,14 +1,15 @@
-// AI analysis via the Anthropic API. Returns { summary, risk, action }.
+// AI analysis via the Groq API (free tier, OpenAI-compatible).
+// Get a free key at https://console.groq.com - no credit card required.
 require('dotenv').config();
 
-const API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001';
+const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 
 const VALID_RISKS = ['Low', 'Medium', 'High'];
 
 async function analyzeIncident({ title, description, severity }) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    const err = new Error('ANTHROPIC_API_KEY is not configured on the server');
+  if (!process.env.GROQ_API_KEY) {
+    const err = new Error('GROQ_API_KEY is not configured on the server');
     err.status = 503;
     throw err;
   }
@@ -25,13 +26,13 @@ Description: ${description}`;
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      'x-api-key': process.env.ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
+      authorization: `Bearer ${process.env.GROQ_API_KEY}`,
     },
     body: JSON.stringify({
       model: MODEL,
       max_tokens: 500,
       messages: [{ role: 'user', content: prompt }],
+      response_format: { type: 'json_object' },
     }),
   });
 
@@ -43,7 +44,7 @@ Description: ${description}`;
   }
 
   const data = await res.json();
-  const text = data.content?.[0]?.text || '';
+  const text = data.choices?.[0]?.message?.content || '';
 
   // Tolerate the model wrapping JSON in extra text or code fences
   const match = text.match(/\{[\s\S]*\}/);
