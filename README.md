@@ -60,4 +60,6 @@ npm run dev            # http://localhost:5173
 
 ## Screenshots
 
-_Add screenshots here: dashboard, incident form, AI analysis view._
+<img width="1508" height="773" alt="image" src="https://github.com/user-attachments/assets/543dde6d-d52e-465c-ae4a-1d9fec2258a2" />
+<img width="1511" height="766" alt="image" src="https://github.com/user-attachments/assets/2415afd8-4668-4743-8546-8abd2cf54961" />
+
