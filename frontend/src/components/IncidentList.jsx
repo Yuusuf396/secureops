@@ -5,8 +5,15 @@ const SEVERITY_ORDER = { High: 3, Medium: 2, Low: 1 };
 export default function IncidentList({ incidents, onSelect }) {
   const [filter, setFilter] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
+  const [query, setQuery] = useState('');
 
   let shown = filter === 'All' ? incidents : incidents.filter((i) => i.severity === filter);
+  if (query.trim()) {
+    const q = query.trim().toLowerCase();
+    shown = shown.filter(
+      (i) => i.title.toLowerCase().includes(q) || i.description.toLowerCase().includes(q)
+    );
+  }
   shown = [...shown].sort((a, b) =>
     sortBy === 'severity'
       ? SEVERITY_ORDER[b.severity] - SEVERITY_ORDER[a.severity]
@@ -16,6 +23,14 @@ export default function IncidentList({ incidents, onSelect }) {
   return (
     <div>
       <div className="list-controls">
+        <input
+          type="search"
+          className="search"
+          placeholder="Search incidents…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          aria-label="Search incidents"
+        />
         <select value={filter} onChange={(e) => setFilter(e.target.value)} aria-label="Filter by severity">
           <option value="All">All severities</option>
           <option>Low</option>
@@ -29,7 +44,11 @@ export default function IncidentList({ incidents, onSelect }) {
       </div>
 
       {shown.length === 0 ? (
-        <p className="muted">No incidents yet. Report one to get started.</p>
+        <p className="muted">
+          {incidents.length === 0
+            ? 'No incidents yet. Report one to get started.'
+            : 'No incidents match your search.'}
+        </p>
       ) : (
         <ul className="incident-list">
           {shown.map((incident) => (
@@ -38,6 +57,9 @@ export default function IncidentList({ incidents, onSelect }) {
                 <div className="card-top">
                   <span className={`tag tag-${incident.severity.toLowerCase()}`}>
                     {incident.severity}
+                  </span>
+                  <span className={`tag tag-status-${(incident.status || 'Open').toLowerCase()}`}>
+                    {incident.status || 'Open'}
                   </span>
                   {incident.ai_summary && <span className="tag tag-ai">AI analyzed</span>}
                   <span className="date">

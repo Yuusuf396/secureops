@@ -15,8 +15,9 @@ Full-stack incident management platform with AI-powered risk analysis. Log secur
 ## Features
 
 - **Incident creation** — title, description, severity (Low / Medium / High)
-- **Dashboard** — list all incidents with severity tags, filter by severity, sort by date or severity
-- **Incident detail view** — full details plus persisted AI analysis
+- **Live overview** — stats strip with total, high-severity, open, and AI-analyzed counts
+- **Dashboard** — severity and status tags, free-text search, filter by severity, sort by date or severity
+- **Incident lifecycle** — track each incident through Open → Investigating → Resolved
 - **AI risk analysis** — one click generates a short summary, a risk classification, and a suggested mitigation action, stored on the incident
 
 ## API
@@ -27,6 +28,7 @@ Full-stack incident management platform with AI-powered risk analysis. Log secur
 | GET    | `/incidents`     | List all incidents                           |
 | GET    | `/incidents/:id` | Get a single incident                        |
 | POST   | `/incidents`     | Create an incident                           |
+| PATCH  | `/incidents/:id` | Update incident status                       |
 | POST   | `/ai/summarize`  | Run AI analysis for an incident (by id)      |
 
 ## Running locally

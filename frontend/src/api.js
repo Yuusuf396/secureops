@@ -17,4 +17,6 @@ export const api = {
     request('/incidents', { method: 'POST', body: JSON.stringify(incident) }),
   summarize: (incidentId) =>
     request('/ai/summarize', { method: 'POST', body: JSON.stringify({ incidentId }) }),
+  updateStatus: (id, status) =>
+    request(`/incidents/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
 };

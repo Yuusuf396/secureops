@@ -53,6 +53,22 @@ app.post('/incidents', async (req, res, next) => {
   }
 });
 
+const VALID_STATUSES = ['Open', 'Investigating', 'Resolved'];
+
+app.patch('/incidents/:id', async (req, res, next) => {
+  try {
+    const { status } = req.body || {};
+    if (!VALID_STATUSES.includes(status)) {
+      return res.status(400).json({ error: 'status must be Open, Investigating, or Resolved' });
+    }
+    const incident = await db.updateStatus(req.params.id, status);
+    if (!incident) return res.status(404).json({ error: 'Incident not found' });
+    res.json(incident);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Runs AI analysis for an incident and persists the result on the record.
 app.post('/ai/summarize', async (req, res, next) => {
   try {
@@ -62,7 +78,9 @@ app.post('/ai/summarize', async (req, res, next) => {
     const incident = await db.getIncident(incidentId);
     if (!incident) return res.status(404).json({ error: 'Incident not found' });
 
-    const analysis = await analyzeIncident(incident);
+    // Pass the full incident history so the triage engine can retrieve similar cases
+    const allIncidents = await db.listIncidents();
+    const analysis = await analyzeIncident(incident, allIncidents);
     const updated = await db.saveAnalysis(incident.id, analysis);
     res.json(updated);
   } catch (err) {

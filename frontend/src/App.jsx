@@ -38,13 +38,38 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>
-          <span className="logo">🛡️</span> SecureOps Lite
-        </h1>
-        <p className="tagline">Incident management with AI-powered risk analysis</p>
+        <h1>SecureOps Lite</h1>
+        <p className="tagline">Incident management · AI-powered risk analysis</p>
       </header>
 
       {error && <div className="banner error">{error}</div>}
+
+      {!selected && !loading && (
+        <section className="stats">
+          <div className="stat">
+            <span className="stat-value">{incidents.length}</span>
+            <span className="stat-label">Total incidents</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value stat-high">
+              {incidents.filter((i) => i.severity === 'High').length}
+            </span>
+            <span className="stat-label">High severity</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value stat-open">
+              {incidents.filter((i) => i.status !== 'Resolved').length}
+            </span>
+            <span className="stat-label">Open</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value stat-ai">
+              {incidents.filter((i) => i.ai_summary).length}
+            </span>
+            <span className="stat-label">AI analyzed</span>
+          </div>
+        </section>
+      )}
 
       {selected ? (
         <IncidentDetail
